@@ -4,6 +4,16 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>WebService</servlet-name>
+  	<display-name>WebService</display-name>
+  	<description></description>
+  	<servlet-class>com.realsil.service.WebService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>WebService</servlet-name>
+  	<url-pattern>/WebService</url-pattern>
+  </servlet-mapping>
     <welcome-file-list>  
      <welcome-file>index.jsp</welcome-file>  
   </welcome-file-list>  
