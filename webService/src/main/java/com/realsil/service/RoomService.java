@@ -2,18 +2,21 @@ package com.realsil.service;
 
 import java.util.List;
 
+import com.realsil.dao.RoomDao;
 import com.realsil.dao.UserDao;
-import com.realsil.dao.interfaceGroup.IUserDao;
+import com.realsil.dao.interfaceGroup.IRoomDao;
+import com.realsil.dao.interfaceGroup.IRoomService;
 import com.realsil.dao.interfaceGroup.IUserService;
+import com.realsil.modal.Room;
 import com.realsil.modal.User;
 
-public class UserService implements IUserService {
+public class RoomService implements IRoomService {
 
-	IUserDao userDao = new UserDao();
-	public boolean add(User user) {
+	IRoomDao roomDao = new RoomDao();
+	public boolean add(Room room) {
 		// TODO Auto-generated method stub
 		try{
-			this.userDao.add(user);
+			this.roomDao.add(room);
 			return true;
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -23,14 +26,14 @@ public class UserService implements IUserService {
 
 	}
 
-	public User getById(int id) {
+	public Room getById(int id) {
 		// TODO Auto-generated method stub
-		return this.userDao.getById(id);
+		return this.roomDao.getById(id);
 	}
 
 	public boolean delete(int id) {
 		try{
-			this.userDao.delete(id);
+			this.roomDao.delete(id);
 			return true;
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -39,9 +42,9 @@ public class UserService implements IUserService {
 		}
 	}
 
-	public boolean update(User user) {
+	public boolean update(Room room) {
 		try{
-			this.userDao.update(user);
+			this.roomDao.update(room);
 			return true;
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -50,14 +53,14 @@ public class UserService implements IUserService {
 		}
 	}
 
-	public List<User> getAll() {
+	public List<Room> getAll() {
 		// TODO Auto-generated method stub
-		return this.userDao.getAll();
+		return this.roomDao.getAll();
 	}
 
-	public List<User> getByState(int state) {
+	public List<Room> getByState(int state) {
 		// TODO Auto-generated method stub
-		return this.userDao.getByState(state);
+		return this.roomDao.getByState(state);
 	}
 
 

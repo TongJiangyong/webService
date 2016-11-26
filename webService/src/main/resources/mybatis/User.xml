@@ -2,19 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.realsil.dao.IUserDao">
+<mapper namespace="com.realsil.dao.interfaceGroup.IUserDao">
  	<resultMap type="User" id="resultListUser">
 	     <id column="id" property="id" />
 	     <result column="username" property="username" />
 	     <result column="password" property="password" />
+	     <result column="registerDate" property="registerDate" />
+	     <result column="state" property="state" />
+		 <result column="lastLoginDate" property="lastLoginDate" />
+	             <!-- mybates 一对一查询的方法property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->  
+         <association  property="frightRecord" javaType="FrightRecord">  
+         <!-- 注意这里对应的队列为数据库中的队列 -->
+            <id column="frightRecord_id" property="id"/> 
+            <result column="withComputerTime" property="withComputerTime"/>  
+            <result column="withBlueTime" property="withBlueTime"/>  
+            <result column="withInternetTime" property="withInternetTime"/>
+            <result column="winComputerTime" property="winComputerTime"/>
+            <result column="winBlueTime" property="winBlueTime"/>  
+            <result column="winInternetTime" property="winInternetTime"/>  
+        </association >
 	</resultMap> 
-
-    <select id="selectUserById" parameterType="int" resultType="User">
-        select * from users where id = #{id}
+	   <select id="getByState" parameterType="int" resultMap="resultListUser">
+        select * from user u,frightrecord f where u.state = #{state} and  u.frightRecord_id = f.id  
     </select> 
-     <select id="getAllUsers" parameterType="string" resultMap="resultListUser">
-        select * from users
+   <select id="getById" parameterType="int" resultMap="resultListUser">
+        select * from user u,frightrecord f where u.id = #{id} and  u.frightRecord_id = f.id
     </select> 
+     <select id="getAll" parameterType="string" resultMap="resultListUser">
+        select * from user u,frightrecord f where u.frightRecord_id = f.id
+    </select> 
+    <delete id="delete" parameterType="int" >
+        delete from user where id=#{id}
+    </delete>
+    <update id="update" parameterType="User"  >
+    <!-- 注意这里与frightRecord的关联关系 ,因此 ，update要update两次-->
+        update user set userName=#{username},password=#{password},registerDate=#{registerDate} 
+        ,lastLogindate=#{lastLoginDate},frightRecord_id=#{frightRecord.id},state=#{state} where id=#{id}
+    </update>
+    
+    <insert id="add" parameterType="User"  useGeneratedKeys="true" keyProperty="id" > 
+       <!-- 自动生成主键   注意这里与frightRecord的关联关系 ,因此 ，add要add两次-->
+        insert into user(username,password,registerDate,lastLoginDate,frightRecord_id,state)  
+             values(#{username},#{password},#{registerDate},#{lastLoginDate},#{frightRecord.id},#{state})  
+    </insert>
 </mapper>
 
 

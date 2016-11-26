@@ -4,10 +4,11 @@ import java.util.Date;
 
 public class Room {
 	private int id;
-	private User serverUser;
-	private User clientUser;
+	private int serverUser;
+	private int clientUser;
 	private int state; //1有一个人--等待状态  2 有两个人--进行状态  0 没有人--退出状态
 	private Date creatTime;
+	private String roomName;
 	public int getId() {
 		return id;
 	}
@@ -27,19 +28,30 @@ public class Room {
 	public void setCreatTime(Date creatTime) {
 		this.creatTime = creatTime;
 	}
-	public User getServerUser() {
+	public int getServerUser() {
 		return serverUser;
 	}
-	public void setServerUser(User serverUser) {
+	public void setServerUser(int serverUser) {
 		this.serverUser = serverUser;
 	}
-	public User getClientUser() {
+	public int getClientUser() {
 		return clientUser;
 	}
-	public void setClientUser(User clientUser) {
+	public void setClientUser(int clientUser) {
 		this.clientUser = clientUser;
 	}
-	
-	
+
+	public String getRoomName() {
+		return roomName;
+	}
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+	@Override
+	public String toString() {
+		return "Room [id=" + id + ", serverUser=" + serverUser + ", clientUser=" + clientUser + ", state=" + state
+				+ ", creatTime=" + creatTime + ", roomName=" + roomName + "]";
+	}
+
 
 }

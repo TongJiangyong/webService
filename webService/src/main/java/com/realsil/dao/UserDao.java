@@ -5,75 +5,69 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.realsil.dao.interfaceGroup.IFrightRecordDao;
+import com.realsil.dao.interfaceGroup.IUserDao;
 import com.realsil.modal.User;
-import com.realsil.service.IUserService;
 import com.realsil.service.UserService;
 
 public class UserDao implements IUserDao  
 {  
     public void add(User user)  
     {  
-        SqlSession session = GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
-        try  
-        {   
-            session.commit();// 提交事务  
-        } catch (Exception e)  
-        {  
-            e.printStackTrace();  
-        } finally  
-        {  
-            session.close();  
-        }  
+    	SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
+    	IUserDao userDao=session.getMapper(IUserDao.class);
+    	IFrightRecordDao frightRecordDao=session.getMapper(IFrightRecordDao.class);
+    	//注意这里add了两次
+    	System.out.println("test:"+user.getLastLoginDate());
+    	userDao.add(user);
+    	frightRecordDao.add(user.getFrightRecord());
+    	//frightRecordDao.add(user.getFrightRecord());
+	    session.commit();
     }  
     
     public User getById(int id){
-    	SqlSession session = GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
-    	User user = (User) session.selectOne("com.realsil.modal.selectUserById",id); 
-        session.close();  
+    	SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
+    	IUserDao userDao=session.getMapper(IUserDao.class);
+	    User user = userDao.getById(id);
 	    session.commit();
         return user;  
     }  
    
     public void delete(int id)  
     {  
-        SqlSession session = GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
-        try  
-        {  
-            session.getMapper(IUserService.class).delete(id);  
-            session.commit();// 提交事务  
-        } catch (Exception e)  
-        {  
-            e.printStackTrace();  
-        } finally  
-        {  
-            session.close();  
-        }  
+        SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
+    	IUserDao userDao=session.getMapper(IUserDao.class);
+	    userDao.delete(id);
+        session.commit();// 提交事务  
     }  
   
-    public int update(User user)  
+    public void update(User user)  
     {  
-        int count = 0;  
-        SqlSession session = GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
-        try  
-        {  
-            session.commit();// 提交事务  
-        } catch (Exception e)  
-        {  
-            count = 0;  
-            e.printStackTrace();  
-        } finally  
-        {  
-            session.close();  
-        }  
-        return count;  
+    	SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
+    	IUserDao userDao=session.getMapper(IUserDao.class);
+    	IFrightRecordDao frightRecordDao=session.getMapper(IFrightRecordDao.class);
+	    userDao.update(user); 
+    	frightRecordDao.update(user.getFrightRecord());
+	    session.commit();
     }  
   
 
-	public List<User> getAllUsers() {
-		  SqlSession session = GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();
+	public List<User> getAll() {
+		   SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();
 	       IUserDao userDao=session.getMapper(IUserDao.class);
-	       List<User> users = userDao.getAllUsers();
+	       List<User> users = userDao.getAll();
 	       session.commit();
 	       return users;  
-	}  
+	}
+
+	public List<User> getByState(int state) {
+		   SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();
+	       IUserDao userDao=session.getMapper(IUserDao.class);
+	       List<User> users = userDao.getByState(state);
+	       session.commit();
+	       return users;  
+	}
+	
+	
+
 }  

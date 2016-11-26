@@ -50,6 +50,13 @@ public class FrightRecord {
 	public void setId(int id) {
 		this.id = id;
 	}
+	@Override
+	public String toString() {
+		return "FrightRecord [id=" + id + ", withComputerTime=" + withComputerTime + ", withBlueTime=" + withBlueTime
+				+ ", withInternetTime=" + withInternetTime + ", winComputerTime=" + winComputerTime + ", winBlueTime="
+				+ winBlueTime + ", winInternetTime=" + winInternetTime + "]";
+	}
+	
 	
 	
 }

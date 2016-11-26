@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.realsil.dao.interfaceGroup.IRoomDao">
+ 	<resultMap type="Room" id="resultListRoom">
+	     <id column="id" property="id" />
+	     <result column="serverUser_id" property="serverUser" />
+	     <result column="serverUser_id" property="clientUser" />
+	     <result column="creatTime" property="creatTime" />
+	     <result column="state" property="state" />	  
+	     <result column="roomName" property="roomName" />	     
+	             <!-- property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->  
+	</resultMap> 
+	<select id="getByState" parameterType="int" resultMap="resultListRoom">
+          select * from room where state = #{state} 
+    </select> 
+   <select id="getById" parameterType="int" resultMap="resultListRoom">
+        select * from room where id = #{id} 
+    </select> 
+     <select id="getAll" parameterType="string" resultMap="resultListRoom">
+        select * from room
+    </select> 
+    <delete id="delete" parameterType="int">
+        delete from room where id=#{id}
+    </delete>
+    <update id="update" parameterType="Room" >
+        update room set serverUser_id=#{serverUser},clientUser_id=#{clientUser},state=#{state},creatTime=#{creatTime},roomName=#{roomName} where id=#{id}
+    </update>
+    <insert id="add" parameterType="Room"  useGeneratedKeys="true" keyProperty="id"> 
+       <!-- 自动生成主键 -->
+        insert into room(serverUser_id,clientUser_id,state,creatTime,roomName)  
+             values(#{serverUser},#{clientUser},#{state},#{creatTime},#{roomName})  
+    </insert>
+</mapper>
+
+

@@ -9,6 +9,7 @@ public class User {
 	private Date registerDate;
 	private Date lastLoginDate;
 	private FrightRecord frightRecord;
+	private int state; //上线/ 未上线   0/1 
 	public int getId() {
 		return id;
 	}
@@ -46,6 +47,18 @@ public class User {
 	public void setLastLoginDate(Date lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
 	}
+	public int getState() {
+		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", registerDate=" + registerDate
+				+ ", lastLoginDate=" + lastLoginDate + ", frightRecord=" + frightRecord.getWinBlueTime() + "]";
+	}
+	
 	
 
 	

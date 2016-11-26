@@ -3,6 +3,8 @@
 <configuration> 
     <typeAliases> 
         <typeAlias alias="User" type="com.realsil.modal.User"/> 
+        <typeAlias alias="FrightRecord" type="com.realsil.modal.FrightRecord"/> 
+                <typeAlias alias="Room" type="com.realsil.modal.Room"/> 
     </typeAliases>  
     <environments default="environment">  
         <environment id="environment">  
@@ -18,5 +20,7 @@
     </environments>  
        <mappers>
         	<mapper resource="mybatis/User.xml"/> 
+        	<mapper resource="mybatis/Room.xml"/> 
+        	<mapper resource="mybatis/FrightRecord.xml"/> 
         </mappers> 
 </configuration>  

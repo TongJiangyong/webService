@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.realsil.dao.interfaceGroup.IFrightRecordDao">
+ 	<resultMap type="FrightRecord" id="resultListRecord">
+            <id column="id" property="id"/> 
+            <result column="withComputerTime" property="withComputerTime"/>  
+            <result column="withBlueTime" property="withBlueTime"/>  
+            <result column="withInternetTime" property="withInternetTime"/>
+            <result column="winComputerTime" property="winComputerTime"/>
+            <result column="winBlueTime" property="winBlueTime"/>  
+            <result column="winInternetTime" property="winInternetTime"/>  
+	</resultMap> 
+   <select id="getById" parameterType="int" resultMap="resultListRecord">
+        select * from frightrecord where id = #{id}
+    </select> 
+     <select id="getAll" parameterType="string" resultMap="resultListRecord">
+        select * from frightrecord
+    </select> 
+    <delete id="delete" parameterType="int">
+        delete from frightrecord where id=#{id}
+    </delete>
+    <update id="update" parameterType="FrightRecord" >
+        update frightrecord set withComputerTime=#{withComputerTime},withBlueTime=#{withBlueTime},withInternetTime=#{withInternetTime} 
+        ,winComputerTime=#{winComputerTime},winBlueTime=#{winBlueTime} ,winInternetTime=#{winInternetTime} where id=#{id}
+    </update>
+    <insert id="add" parameterType="FrightRecord"  useGeneratedKeys="true" keyProperty="id"> 
+       <!-- 自动生成主键 -->
+        insert into frightrecord(withComputerTime,withBlueTime,withInternetTime,winComputerTime,winBlueTime,winInternetTime)  
+             values(#{withComputerTime},#{withBlueTime},#{withInternetTime},#{winComputerTime},#{winBlueTime},#{winInternetTime})  
+    </insert>
+</mapper>
+
+

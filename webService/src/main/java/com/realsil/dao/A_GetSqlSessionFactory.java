@@ -7,15 +7,13 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.realsil.service.IUserService;
-
-public class GetSqlSessionFactory
+public class A_GetSqlSessionFactory
 {
 	private static SqlSessionFactory sqlSessionFactory = null;
 	
-	private static GetSqlSessionFactory getSqlSessionFactory = null;
+	private static A_GetSqlSessionFactory getSqlSessionFactory = null;
 
-	private GetSqlSessionFactory()
+	private A_GetSqlSessionFactory()
 	{
 		String rs = "mybatis-config.xml";
 		Reader reader = null;
@@ -29,10 +27,10 @@ public class GetSqlSessionFactory
 		sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 	}
 
-	public static GetSqlSessionFactory getInstance()
+	public static A_GetSqlSessionFactory getInstance()
 	{
 		if (getSqlSessionFactory == null)
-			getSqlSessionFactory = new GetSqlSessionFactory();
+			getSqlSessionFactory = new A_GetSqlSessionFactory();
 		return getSqlSessionFactory;
 	}
 
