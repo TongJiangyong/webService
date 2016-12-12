@@ -9,7 +9,7 @@ public class User {
 	private Date registerDate;
 	private Date lastLoginDate;
 	private FrightRecord frightRecord;
-	private int state; //上线/ 未上线   0/1 
+	private int state; //上线/ 未上线   1/0
 	public int getId() {
 		return id;
 	}
@@ -56,7 +56,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", registerDate=" + registerDate
-				+ ", lastLoginDate=" + lastLoginDate + ", frightRecord=" + frightRecord.getWinBlueTime() + "]";
+				+ ", lastLoginDate=" + lastLoginDate + "]";
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.realsil.servlet;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -76,6 +77,9 @@ public class WebService extends HttpServlet {
 		//获取指定人的相关信息
 		}else if (action.equals("getUserInfo")){
 			this.getUserInfo(request, response);
+		//登录信息查看
+		}else if (action.equals("userLogin")){
+			this.userLogin(request, response);
 		//获取所有人的相关信息
 		}else if (action.equals("getAllUserInfo")){
 			this.getAllUserInfo(request, response);
@@ -94,19 +98,19 @@ public class WebService extends HttpServlet {
 			this.getRoomInfoByState(request, response);
 		}
 		//增加新的用户
-		else if (action.equals("getRoomInfoByState")){
+		else if (action.equals("addNewUser")){
 			this.addNewUser(request, response);
 		}
 		//增加新的房间
-		else if (action.equals("getRoomInfoByState")){
+		else if (action.equals("addNewRoom")){
 			this.addNewRoom(request, response);
 		}
 		//更新房间信息
-		else if (action.equals("getRoomInfoByState")){
+		else if (action.equals("updateRoomInfo")){
 			this.updateRoomInfo(request, response);
 		}
 		//更新用户信息
-		else if (action.equals("getRoomInfoByState")){
+		else if (action.equals("updateUserInfo")){
 			this.updateUserInfo(request, response);
 		}
 		//暂时使用更改状态即可，不使用删除的命令，每次要更新房间状态的时候，顺便判断一下，房间是否为空，是否要更改状态即可 
@@ -144,29 +148,44 @@ public class WebService extends HttpServlet {
 	//获取特定房间的相关信息 与id的处理相关
 	private void getRoomInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int roomId=Integer.parseInt(request.getParameter("roomId"));
+		System.out.println("getRoomInfo :"+roomId);
 		Gson gson =new Gson();
 		Room room =roomService.getById(roomId);
 		response.getWriter().print(gson.toJson(room));	
 	}
 	//获取特定状态的相关信息 与state的处理相关	
 	private void getRoomInfoByState(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		int state=Integer.parseInt(request.getParameter("state"));
+		int state=Integer.valueOf(request.getParameter("state"));
+		System.out.println("getRoomInfoByState :"+state);
 		Gson gson =new Gson();
-		List<Room> rooms =roomService.getByState(state);
-		response.getWriter().print(gson.toJson(rooms));	
+		//这个处理方法非常不好，mybatis的遗留问题，不管了
+		if(state ==3){
+			List<Room> rooms_1  =roomService.getByState(1);	
+			List<Room> rooms_2 =roomService.getByState(2);	
+			if(rooms_2.size()!=0){
+				rooms_1.addAll(rooms_2);
+			}
+			response.getWriter().print(gson.toJson(rooms_1));	
+		}else{
+			List<Room> rooms =roomService.getByState(state);
+			response.getWriter().print(gson.toJson(rooms));			
+		}
+
 		
 	}
 	//获取特定用户的相关信息 与state的处理相关		
 	private void getUserInfoByState(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int state=Integer.parseInt(request.getParameter("state"));
+		System.out.println("getUserInfoByState :"+state);
 		Gson gson =new Gson();
 		List<User> users =userService.getByState(state);
-		response.getWriter().print(gson.toJson(users));
+		response.getWriter().print(gson.toJson(users));			
 	}
 	
 
 	private void updateUserInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String userInfo=request.getParameter("userInfo");
+		System.out.println("updateUserInfo :"+userInfo);	
 		Gson gson =new Gson();	
 		User user =gson.fromJson(userInfo, User.class);
 		if(userService.update(user)){
@@ -180,6 +199,7 @@ public class WebService extends HttpServlet {
 
 	private void updateRoomInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String roomInfo=request.getParameter("roomInfo");
+		System.out.println("updateRoomInfo :"+roomInfo);
 		Gson gson =new Gson();	
 		Room room =gson.fromJson(roomInfo, Room.class);
 		if(roomService.update(room)){
@@ -194,6 +214,7 @@ public class WebService extends HttpServlet {
 
 	private void addNewRoom(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String roomInfo=request.getParameter("roomInfo");
+		System.out.println("addNewRoom :"+roomInfo);
 		Gson gson =new Gson();	
 		Room room =gson.fromJson(roomInfo, Room.class);
 		if(roomService.add(room)){
@@ -207,17 +228,69 @@ public class WebService extends HttpServlet {
 	}
 
 	private void addNewUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("addNewUser ***************************************");
 		String userInfo=request.getParameter("userInfo");
+		System.out.println("addNewUser :"+userInfo);
 		Gson gson =new Gson();	
 		User user =gson.fromJson(userInfo, User.class);
-		if(userService.add(user)){
-			//0表示正常
-			response.getWriter().print(0);
-		}else{
-			//1表示出错
-			response.getWriter().print(1);
+		//判断注册是否重名
+		List<User> users = userService.getAll();
+		System.out.println("userService :"+users.size());
+		boolean flag =false;
+		for(User u:users){
+			//System.out.println("addNewUser u  :"+u.toString());
+			if(u.getUsername().equals(user.getUsername().trim())){
+				//System.out.println("has user");
+				flag = true;
+				break;		
+			}
+
 		}
-		
+		if(flag){	
+			//#表示 重名
+			response.getWriter().print("#");	
+		}else{
+			user.setRegisterDate(new Date());
+			if(userService.add(user)){
+				//0表示正常
+				response.getWriter().print(0);
+			}else{
+				//$表示出错
+				response.getWriter().print(1);
+			}
+		}
+	}
+	
+	private void userLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String userInfo=request.getParameter("userInfo");
+		System.out.println("userLogin :"+userInfo);	
+		Gson gson =new Gson();	
+		User user =gson.fromJson(userInfo, User.class);
+		System.out.println("user getUsername :"+user.getUsername()+"user getPassword :"+user.getPassword());
+		List<User> users = userService.getAll();
+		User loginUser = new User();
+		boolean flag =false;
+		//判断用户名和密码是否正确 
+		for(User u:users){
+			//System.out.println("list user:"+u.toString());
+			if(u.getUsername().equals(user.getUsername())&&u.getPassword().equals((user.getPassword()))){
+				flag = true;
+				loginUser = u;
+				//更新该用户的登录信息
+				loginUser.setLastLoginDate(new Date());
+				userService.update(loginUser);
+				break;		
+			}
+		}
+		//返回该用户的ID号
+		//数据库中有该用户
+		if(flag){	
+			//n表示 有用户,且用户ID为上诉值
+			response.getWriter().print(gson.toJson(loginUser));	
+		}else{
+			//0表示没有用户
+			response.getWriter().print(0);	
+		}
 	}
 	
 }

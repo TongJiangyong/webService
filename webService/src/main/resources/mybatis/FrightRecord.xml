@@ -12,6 +12,9 @@
             <result column="winBlueTime" property="winBlueTime"/>  
             <result column="winInternetTime" property="winInternetTime"/>  
 	</resultMap> 
+   <select id="getByDesc" resultMap="resultListRecord">
+       SELECT * FROM frightrecord ORDER BY id DESC LIMIT 1
+   </select> 
    <select id="getById" parameterType="int" resultMap="resultListRecord">
         select * from frightrecord where id = #{id}
     </select> 

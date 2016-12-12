@@ -17,6 +17,13 @@ public class FrightRecordDao implements IFrightRecordDao
 	    session.commit();
 		
 	}
+	public FrightRecord getByDesc() {
+    	SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
+    	IFrightRecordDao frightRecordDao=session.getMapper(IFrightRecordDao.class);
+    	FrightRecord frightRecord = frightRecordDao.getByDesc();
+	    session.commit();	
+        return frightRecord;  
+	}
 
 	public FrightRecord getById(int id) {
     	SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  

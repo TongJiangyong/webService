@@ -8,7 +8,7 @@
   	<servlet-name>WebService</servlet-name>
   	<display-name>WebService</display-name>
   	<description></description>
-  	<servlet-class>com.realsil.service.WebService</servlet-class>
+  	<servlet-class>com.realsil.servlet.WebService</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>WebService</servlet-name>
