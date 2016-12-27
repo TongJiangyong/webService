@@ -15,6 +15,9 @@
 	<select id="getByState" parameterType="int" resultMap="resultListRoom">
           select * from room where state = #{state} 
     </select> 
+   <select id="getByDesc" resultMap="resultListRoom">
+       SELECT * FROM room ORDER BY id DESC LIMIT 1
+   </select> 
    <select id="getById" parameterType="int" resultMap="resultListRoom">
         select * from room where id = #{id} 
     </select> 

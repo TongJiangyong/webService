@@ -7,7 +7,7 @@ import com.realsil.modal.Room;
 import com.realsil.modal.User;
 
 public interface IRoomService {
-	public boolean add(Room room) ;
+	public int add(Room room) ;
     public Room getById(int id);
     public boolean delete(int id);
     public boolean update(Room room);

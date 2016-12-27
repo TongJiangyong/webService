@@ -13,15 +13,14 @@ import com.realsil.modal.User;
 public class RoomService implements IRoomService {
 
 	IRoomDao roomDao = new RoomDao();
-	public boolean add(Room room) {
+	public int add(Room room) {
 		// TODO Auto-generated method stub
 		try{
-			this.roomDao.add(room);
-			return true;
+			return this.roomDao.add(room);
 		}catch (Exception e) {
 			// TODO: handle exception
-			System.out.println(e);
-			return false;
+			System.out.println("error info:"+e);
+			return 0;
 		}
 
 	}

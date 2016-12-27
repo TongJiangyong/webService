@@ -217,14 +217,9 @@ public class WebService extends HttpServlet {
 		System.out.println("addNewRoom :"+roomInfo);
 		Gson gson =new Gson();	
 		Room room =gson.fromJson(roomInfo, Room.class);
-		if(roomService.add(room)){
-			//0表示正常
-			response.getWriter().print(0);
-		}else{
-			//1表示出错
-			response.getWriter().print(1);
-		}
-		
+		room.setCreatTime(new Date());
+		response.getWriter().print(roomService.add(room));		
+
 	}
 
 	private void addNewUser(HttpServletRequest request, HttpServletResponse response) throws IOException {

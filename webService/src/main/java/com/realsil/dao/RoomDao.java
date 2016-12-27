@@ -4,18 +4,22 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.realsil.dao.interfaceGroup.IFrightRecordDao;
 import com.realsil.dao.interfaceGroup.IRoomDao;
+import com.realsil.modal.FrightRecord;
 import com.realsil.modal.Room;
 
 public class RoomDao implements IRoomDao
 {
 
-	public void add(Room room) {
+	public int add(Room room) {
     	SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
     	IRoomDao roomDao=session.getMapper(IRoomDao.class);
-    	roomDao.add(room);
+    	roomDao.add(room);	 
 	    session.commit();
-		
+    	//这里的处理方法非常不好，以后再处理吧.....
+    	Room roomReturn = roomDao.getByDesc();
+        return roomReturn.getId(); 
 	}
 
 	public Room getById(int id) {
@@ -57,6 +61,14 @@ public class RoomDao implements IRoomDao
     	session.commit();
     	return rooms; 
 	}  
+	
+	public Room getByDesc() {
+    	SqlSession session = A_GetSqlSessionFactory.getInstance().getSqlSessionFactory().openSession();  
+    	IRoomDao roomDao=session.getMapper(IRoomDao.class);
+    	Room room = roomDao.getByDesc();
+	    session.commit();	
+        return room;  
+	}
 
 
 }  
