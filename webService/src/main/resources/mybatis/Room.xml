@@ -28,7 +28,7 @@
         delete from room where id=#{id}
     </delete>
     <update id="update" parameterType="Room" >
-        update room set serverUser_id=#{serverUser},clientUser_id=#{clientUser},state=#{state},creatTime=#{creatTime},roomName=#{roomName} where id=#{id}
+        update room set serverUser_id=#{serverUser},clientUser_id=#{clientUser},state=#{state},roomName=#{roomName} where id=#{id}
     </update>
     <insert id="add" parameterType="Room"  useGeneratedKeys="true" keyProperty="id"> 
        <!-- 自动生成主键 -->

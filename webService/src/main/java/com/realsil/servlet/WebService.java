@@ -209,7 +209,7 @@ public class WebService extends HttpServlet {
 			//1±íÊ¾³ö´í
 			response.getWriter().print(1);
 		}
-		
+		System.out.println("updateRoomInfo success");
 	}
 
 	private void addNewRoom(HttpServletRequest request, HttpServletResponse response) throws IOException {
