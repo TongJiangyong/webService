@@ -29,18 +29,22 @@ public class MybatisTest extends TestCase {
     	//User user = UserDao.getById(1);
 		//实例化日期格式
 		SimpleDateFormat formatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-/*		User  user= new User();
+		User  user= new User();
 		user.setLastLoginDate(new Date());
-		FrightRecord frightRecord = new FrightRecord();
-		frightRecord.setId(3);
-		user.setFrightRecord(frightRecord);
+
 		userDao.add(user);
-    	System.out.println(formatTime.format(user.getLastLoginDate()));*/
+    	System.out.println(formatTime.format(user.getLastLoginDate()));
     	//update
     	User updateUser= userDao.getById(1);
-    	System.out.println("frightRecord num:"+updateUser.getFrightRecord().getId());
-    	updateUser.setRegisterDate(new Date());
-    	userDao.update(updateUser);
+    	System.out.println("userid num:"+updateUser.getPassword());
+    	
+    	List<User> users= userDao.getAll();
+    	System.out.println("users num:"+users.size());
+    	
+    	userDao.delete(users.size());
+
+    	//updateUser.setRegisterDate(new Date());
+    	//userDao.update(updateUser);
 /*		List<User> users =UserDao.getAll();
 		System.out.println(users.size());
 	     for(User user:users){
@@ -48,9 +52,9 @@ public class MybatisTest extends TestCase {
          }
          
 */
-    	for(Room r:roomDao.getAll()){
-    		System.out.println(r.getRoomName());
-    	}
+//    	for(Room r:roomDao.getAll()){
+//    		System.out.println(r.getRoomName());
+//    	}
 	}
 	
 /*	public void testFrightRecord(){

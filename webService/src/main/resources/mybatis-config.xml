@@ -12,10 +12,10 @@
             <dataSource type="POOLED">  
                 <property name="driver" value="com.mysql.jdbc.Driver" />  
                 <property name="url"  
-                    value="jdbc:mysql://localhost:3306/tank?useUnicode=true&amp;characterEncoding=UTF-8"/>  
-                <property name="username" value="root" />  
+                    value="jdbc:mysql://122.51.93.183:3306/exam?useUnicode=true&amp;characterEncoding=UTF-8"/>  
+                <property name="username" value="yong" />  
                 <!-- <property name="password" value="qq12345" />   -->
-                <property name="password" value="xjtucad" />
+                <property name="password" value="Yong123!" />
             </dataSource>  
         </environment>  
     </environments>  

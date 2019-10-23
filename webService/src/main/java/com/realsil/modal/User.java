@@ -8,7 +8,6 @@ public class User {
 	private String password;
 	private Date registerDate;
 	private Date lastLoginDate;
-	private FrightRecord frightRecord;
 	private int state; //上线/ 未上线   1/0
 	public int getId() {
 		return id;
@@ -29,12 +28,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public FrightRecord getFrightRecord() {
-		return frightRecord;
-	}
-	public void setFrightRecord(FrightRecord frightRecord) {
-		this.frightRecord = frightRecord;
-	}
+
 	public Date getRegisterDate() {
 		return registerDate;
 	}

@@ -113,31 +113,21 @@ public class WebService extends HttpServlet {
 		else if (action.equals("updateUserInfo")){
 			this.updateUserInfo(request, response);
 		}
+		//更新用户信息
+		else if (action.equals("getTitle")){
+			this.getTitle(request, response);
+		}
+		else if (action.equals("userLogOff")){
+			this.getTitle(request, response);
+		}
 		//暂时使用更改状态即可，不使用删除的命令，每次要更新房间状态的时候，顺便判断一下，房间是否为空，是否要更改状态即可 
 		else{
 			response.getWriter().print("error1");
 		}
 	}
+	
 
 
-
-	//测试连接是否成功	
-	private void connectedTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().print("connected");
-	}
-	//获取指定人的相关信息	
-	private void getUserInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int userId=Integer.parseInt(request.getParameter("userId"));
-		Gson gson =new Gson();
-		User user =userService.getById(userId);		
-		response.getWriter().print(gson.toJson(user));		
-	}	
-	//获取所有人的相关信息
-	private void getAllUserInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Gson gson =new Gson();
-		List<User> users =userService.getAll();
-		response.getWriter().print(gson.toJson(users));	
-	}
 	//获取所有房间的相关信息
 	private void getAllRoomInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Gson gson =new Gson();
@@ -222,6 +212,37 @@ public class WebService extends HttpServlet {
 
 	}
 
+	
+	
+	//测试连接是否成功	
+	private void connectedTest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().print("connected");
+	}
+	
+
+	//获取所有房间的相关信息
+	private void getTitle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int returnValue = (int)(1+Math.random()*(3));
+		response.getWriter().print(returnValue);	
+	}
+	
+	
+	
+	//获取指定人的相关信息	
+	private void getUserInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int userId=Integer.parseInt(request.getParameter("userId"));
+		Gson gson =new Gson();
+		User user =userService.getById(userId);		
+		response.getWriter().print(gson.toJson(user));		
+	}	
+	//获取所有人的相关信息
+	private void getAllUserInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Gson gson =new Gson();
+		List<User> users =userService.getAll();
+		response.getWriter().print(gson.toJson(users));	
+	}
+	
+	
 	private void addNewUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		System.out.println("addNewUser ***************************************");
 		String userInfo=request.getParameter("userInfo");
@@ -273,6 +294,39 @@ public class WebService extends HttpServlet {
 				loginUser = u;
 				//更新该用户的登录信息
 				loginUser.setLastLoginDate(new Date());
+				loginUser.setState(1);
+				userService.update(loginUser);
+				break;		
+			}
+		}
+		//返回该用户的ID号
+		//数据库中有该用户
+		if(flag){	
+			//n表示 有用户,且用户ID为上诉值
+			response.getWriter().print(gson.toJson(loginUser));	
+		}else{
+			//0表示没有用户
+			response.getWriter().print(0);	
+		}
+	}
+	
+	private void userLogOff(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String userInfo=request.getParameter("userInfo");
+		System.out.println("userLogOff :"+userInfo);	
+		Gson gson =new Gson();	
+		User user =gson.fromJson(userInfo, User.class);
+		System.out.println("user getUsername :"+user.getUsername()+"user getPassword :"+user.getPassword());
+		List<User> users = userService.getAll();
+		User loginUser = new User();
+		boolean flag =false;
+		//判断用户名和密码是否正确 
+		for(User u:users){
+			//System.out.println("list user:"+u.toString());
+			if(u.getUsername().equals(user.getUsername())&&u.getPassword().equals((user.getPassword()))){
+				flag = true;
+				loginUser = u;
+				//更新该用户的登录信息
+				loginUser.setState(0);
 				userService.update(loginUser);
 				break;		
 			}

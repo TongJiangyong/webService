@@ -11,8 +11,8 @@
 	     <result column="state" property="state" />
 		 <result column="lastLoginDate" property="lastLoginDate" />
 	             <!-- mybates 一对一查询的方法property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->  
-         <association  property="frightRecord" javaType="FrightRecord">  
-         <!-- 注意这里对应的队列为数据库中的队列 -->
+         <!--  <association  property="frightRecord" javaType="FrightRecord">  
+        注意这里对应的队列为数据库中的队列 
             <id column="frightRecord_id" property="id"/> 
             <result column="withComputerTime" property="withComputerTime"/>  
             <result column="withBlueTime" property="withBlueTime"/>  
@@ -20,16 +20,16 @@
             <result column="winComputerTime" property="winComputerTime"/>
             <result column="winBlueTime" property="winBlueTime"/>  
             <result column="winInternetTime" property="winInternetTime"/>  
-        </association >
+        </association >-->
 	</resultMap> 
 	   <select id="getByState" parameterType="int" resultMap="resultListUser">
-        select * from user u,frightrecord f where u.state = #{state} and  u.frightRecord_id = f.id  
+        select * from user u where u.state = #{state}  
     </select> 
    <select id="getById" parameterType="int" resultMap="resultListUser">
-        select * from user u,frightrecord f where u.id = #{id} and  u.frightRecord_id = f.id
+        select * from user u where u.id = #{id}
     </select> 
      <select id="getAll" parameterType="string" resultMap="resultListUser">
-        select * from user u,frightrecord f where u.frightRecord_id = f.id
+        select * from user
     </select> 
     <delete id="delete" parameterType="int" >
         delete from user where id=#{id}
@@ -37,13 +37,13 @@
     <update id="update" parameterType="User"  >
     <!-- 注意这里与frightRecord的关联关系 ,因此 ，update要update两次-->
         update user set userName=#{username},password=#{password},registerDate=#{registerDate} 
-        ,lastLogindate=#{lastLoginDate},frightRecord_id=#{frightRecord.id},state=#{state} where id=#{id}
+        ,lastLogindate=#{lastLoginDate},state=#{state} where id=#{id}
     </update>
     
     <insert id="add" parameterType="User"  useGeneratedKeys="true" keyProperty="id" > 
        <!-- 自动生成主键   注意这里与frightRecord的关联关系 ,因此 ，add要add两次-->
-        insert into user(username,password,registerDate,lastLoginDate,frightRecord_id,state)  
-             values(#{username},#{password},#{registerDate},#{lastLoginDate},#{frightRecord.id},#{state})  
+        insert into user(username,password,registerDate,lastLoginDate,state)  
+             values(#{username},#{password},#{registerDate},#{lastLoginDate},#{state})  
     </insert>
 </mapper>
 
